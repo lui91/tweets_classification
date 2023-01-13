@@ -1,0 +1,7 @@
+Flask==2.2.2
+joblib==1.1.0
+nltk==3.8
+pandas==1.5.2
+plotly==5.11.0
+scikit_learn==1.2.0
+SQLAlchemy==1.4.45
