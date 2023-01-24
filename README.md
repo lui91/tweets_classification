@@ -1,4 +1,4 @@
-# tweets_classification
+# Tweets multi classification
 
 ## Data exploratory analysis
 
