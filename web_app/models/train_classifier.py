@@ -12,7 +12,6 @@ from sklearn.metrics import classification_report
 from joblib import dump
 import sys
 from sklearn.model_selection import GridSearchCV
-from pathlib import Path
 import os
 
 
@@ -42,8 +41,8 @@ def build_model() -> GridSearchCV:
         ('predictor', MultiOutputClassifier(RandomForestClassifier()))
     ])
     grid_params = {
-    "predictor__estimator__criterion": ["gini", "entropy"],
-    "predictor__estimator__max_features": ["sqrt", "log2"]
+        "predictor__estimator__criterion": ["gini", "entropy"],
+        "predictor__estimator__max_features": ["sqrt", "log2"]
     }
     cv = GridSearchCV(pipeline, grid_params)
     return cv
@@ -57,7 +56,8 @@ def evaluate_model(model, X_test, Y_test) -> None:
 
     Y_pred = model.predict(X_test)
     for i, key in enumerate(Y_test):
-        report = classification_report(Y_pred[:, i], Y_test.iloc[:, i], output_dict=True)
+        report = classification_report(
+            Y_pred[:, i], Y_test.iloc[:, i], output_dict=True)
         weighted_precision.append(report['weighted avg']['precision'])
         weighted_recall.append(report['weighted avg']['recall'])
         weighted_f1.append(report['weighted avg']['f1-score'])
@@ -68,9 +68,8 @@ def evaluate_model(model, X_test, Y_test) -> None:
 
 def save_model(model, model_filepath: str):
     """ Save the best configuration of the model found with grid search """
-    file_name = Path(model_filepath)
-    if file_name.exists():
-        os.remove(file_name.as_posix())
+    if os.path.exists(model_filepath):
+        os.remove(model_filepath)
     estimator = model.best_estimator_
     dump(estimator, model_filepath)
 
@@ -86,14 +85,15 @@ def main():
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-        
+        X_train, X_test, Y_train, Y_test = train_test_split(
+            X, Y, test_size=0.2)
+
         print('Building model...')
         model = build_model()
-        
+
         print('Training model...')
         model.fit(X_train, Y_train)
-        
+
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test)
 
@@ -103,9 +103,9 @@ def main():
         print('Trained model saved!')
 
     else:
-        print('Please provide the filepath of the disaster messages database '\
-              'as the first argument and the filepath of the pickle file to '\
-              'save the model to as the second argument. \n\nExample: python '\
+        print('Please provide the filepath of the disaster messages database '
+              'as the first argument and the filepath of the pickle file to '
+              'save the model to as the second argument. \n\nExample: python '
               'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
 
 
