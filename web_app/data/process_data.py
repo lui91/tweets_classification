@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
+import os
 
 
 def load_data(messages_filepath, categories_filepath) -> pd.DataFrame:
@@ -54,6 +55,7 @@ def drop_text(categories, power_bi_format) -> pd.DataFrame:
     ''' Splits a string separated by '-' and saves the 
         numbers on a pd.DataFrame. Ex. related-1 -> 1
         '''
+    print(f"Using PowerBI format: {power_bi_format}")
     if power_bi_format:
         def filter_number(x): return True if int(
             x.split("-")[1]) == 1 else False
@@ -70,11 +72,14 @@ def remove_columns(df, col_names: list) -> None:
 
 
 def concat_dataframes(first_df, second_df) -> pd.DataFrame:
-    ''' Concat columns of two dataframes into one Data Frame'''
+    ''' Concat columns of two dataframes into one DataFrame'''
     return pd.concat([first_df, second_df], axis=1)
 
 
 def export_to_sql(df: pd.DataFrame, file_name, table_name="disaster_Fact") -> None:
+    ''' Verify if database exists, if true deletes old DB and saves a new file with the same name'''
+    if os.path.exists(file_name):
+        os.remove(file_name)
     engine = create_engine(f'sqlite:///{file_name}')
     df.to_sql(f'{table_name}', engine, index=False)
     print(f"Saved table {table_name} in {file_name} ")
