@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  web:
+    image: tweets/classification:flask
+    build: .
+    ports:
+      - "8000:3000"
