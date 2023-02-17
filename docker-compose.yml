@@ -2,7 +2,10 @@ version: "3.9"
 services:
   web:
 <<<<<<< HEAD
+<<<<<<< HEAD
     image: tweets/classification:flask
+=======
+>>>>>>> 3ced3fdf8f216556bd3bf3af9adcc824bcd49cba
 =======
 >>>>>>> 3ced3fdf8f216556bd3bf3af9adcc824bcd49cba
     build: .
