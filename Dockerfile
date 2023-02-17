@@ -9,4 +9,8 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 3000
 COPY web_app .
+<<<<<<< HEAD
 CMD ["python", "./app/run.py"]
+=======
+CMD ["python", "./app/run.py"]
+>>>>>>> 3ced3fdf8f216556bd3bf3af9adcc824bcd49cba
